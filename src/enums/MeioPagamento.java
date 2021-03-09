@@ -1,4 +1,5 @@
 package enums;
 
-public class MeioPagamento {
+public enum MeioPagamento {
+    BOLETO, CARTAO;
 }
