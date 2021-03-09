@@ -49,4 +49,25 @@ class ProcessadorTest {
         f.makePayment(payment);
         Assertions.assertEquals(f.status, FaturaStatus.PAGO);
     }
+
+    @Test
+    @DisplayName("Validate if fatura gets not payed if boletos value are lower then fatura")
+    void TestaFaturaPagaParaValoresMenores() {
+        Fatura fatura = new Fatura(new Date(), 3000, "Eduardo Lara");
+        Boleto boletoA = new Boleto(new Date(), 500);
+        Boleto boletoB = new Boleto(new Date(), 500);
+
+        Fatura f = new Fatura(new Date(), 10000, "f2");
+        Boleto boletoA = new Boleto(new Date(), 555);
+        Boleto boletoB = new Boleto(new Date(), 111);
+
+        List<Boleto> listBoleto = new ArrayList<Boleto>();
+
+        listBoleto.add(bA);
+        listBoleto.add(bB);
+
+        Pagamento payment = processador.processPayment(listBoleto);
+        f.makePayment(payment);
+        Assertions.assertEquals(f.status, FaturaStatus.NAO_PAGO);
+    }
 }
