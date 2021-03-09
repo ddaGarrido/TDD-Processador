@@ -37,8 +37,8 @@ class ProcessadorTest {
     @DisplayName("Validate if fatura get payed correctly when boletos values are more then fatura")
     void TestaFaturaPagaMaiorBoletos() {
         Fatura f = new Fatura(new Date(), 1, "f2");
-        Boleto boletoA = new Boleto(new Date(), 9999);
-        Boleto boletoB = new Boleto(new Date(), 1);
+        Boleto bA = new Boleto(new Date(), 9999);
+        Boleto bB = new Boleto(new Date(), 1);
 
         List<Boleto> listBoleto = new ArrayList<Boleto>();
 
@@ -53,13 +53,9 @@ class ProcessadorTest {
     @Test
     @DisplayName("Validate if fatura gets not payed if boletos value are lower then fatura")
     void TestaFaturaPagaParaValoresMenores() {
-        Fatura fatura = new Fatura(new Date(), 3000, "Eduardo Lara");
-        Boleto boletoA = new Boleto(new Date(), 500);
-        Boleto boletoB = new Boleto(new Date(), 500);
-
-        Fatura f = new Fatura(new Date(), 10000, "f2");
-        Boleto boletoA = new Boleto(new Date(), 555);
-        Boleto boletoB = new Boleto(new Date(), 111);
+        Fatura f = new Fatura(new Date(), 10000, "f3");
+        Boleto bA = new Boleto(new Date(), 555);
+        Boleto bB = new Boleto(new Date(), 111);
 
         List<Boleto> listBoleto = new ArrayList<Boleto>();
 
@@ -69,5 +65,21 @@ class ProcessadorTest {
         Pagamento payment = processador.processPayment(listBoleto);
         f.makePayment(payment);
         Assertions.assertEquals(f.status, FaturaStatus.NAO_PAGO);
+    }
+
+    @Test
+    @DisplayName("Validate if payment get corret MP")
+    void TestaTipoDePagamento() {
+        Fatura f = new Fatura(new Date(), 10000, "f4");
+        Boleto bA = new Boleto(new Date(), 555);
+
+        List<Boleto> listBoleto = new ArrayList<Boleto>();
+
+        listBoleto.add(bA);
+
+        Pagamento payment = processador.processPayment(listBoleto);
+
+        Assertions.assertEquals(payment.getMP(), MeioPagamento.BOLETO);
+        Assertions.assertNotEquals(payment.getMP(), MeioPagamento.CARTAO);
     }
 }
